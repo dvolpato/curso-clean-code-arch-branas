@@ -1,3 +1,4 @@
+import Coupon from "./Coupon";
 import Order from "./Order";
 
 test("should not create an order with invalid CPF", function () {
@@ -6,14 +7,22 @@ test("should not create an order with invalid CPF", function () {
 });
 
 test("should create an order with valid CPF", () => {
-  // given
   const cpf = "754.604.580-05";
   const order = new Order(cpf);
   order.addItem("Guitarra", 1000, 2);
   order.addItem("Amplificador", 5000, 1);
   order.addItem("Cabo", 30, 3);
-  // when
   const total = order.getTotal();
-  // then
   expect(total).toBe(7090);
 })
+
+test("should create an order with discount", function () {
+  const cpf = "754.604.580-05";
+  const order = new Order(cpf);
+  order.addItem("Guitarra", 1000, 2);
+  order.addItem("Amplificador", 5000, 1);
+  order.addItem("Cabo", 30, 3);
+  order.addCoupon(new Coupon ("VALE20", 20));
+  const total = order.getTotal();
+  expect(total).toBe(5672);
+});
