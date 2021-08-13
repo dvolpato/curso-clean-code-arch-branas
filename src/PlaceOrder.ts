@@ -1,6 +1,7 @@
 import Coupon from "./Coupon";
 import Order from "./Order"
 import PlaceOrderInput from "./PlaceOrderInput";
+import PlaceOrderOutput from "./PlaceOrderOutput";
 
 export default class PlaceOrder {
   coupons: Coupon[];
@@ -13,7 +14,7 @@ export default class PlaceOrder {
     this.orders = [];
   }
 
-  execute (input: PlaceOrderInput) {
+  execute (input: PlaceOrderInput): PlaceOrderOutput {
     const order = new Order(input.cpf);
     for (const item of input.items) {
       order.addItem(item.description, item.price, item.quantity);
@@ -24,8 +25,6 @@ export default class PlaceOrder {
     }
     const total = order.getTotal();
     this.orders.push(order);
-    return {
-      total
-    }
+    return new PlaceOrderOutput(total);
   }
 }
