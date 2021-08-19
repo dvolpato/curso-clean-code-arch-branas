@@ -9,7 +9,7 @@ export default class PlaceOrder {
 
   constructor() {
     this.coupons = [
-      new Coupon("VALE20", 20)
+      new Coupon("VALE20", 20, new Date("2021-10-10"))
     ];
     this.orders = [];
   }
