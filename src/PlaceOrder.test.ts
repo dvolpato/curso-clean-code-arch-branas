@@ -7,9 +7,9 @@ test("Should place an order", function () {
   const input = {
     cpf: "754.604.580-05",
     items: [
-      {description: "Guitarra", price: 1000, quantity: 2},
-      {description: "Amplificador", price: 5000, quantity: 1},
-      {description: "Cabo", price: 30, quantity: 3},
+      {id: "1", quantity: 2},
+      {id: "2", quantity: 1},
+      {id: "3", quantity: 3},
     ],
     coupon: "VALE20"
   };
@@ -23,9 +23,9 @@ test("Should place an order with an expired discount coupon", function () {
   const input = {
     cpf: "754.604.580-05",
     items: [
-      {description: "Guitarra", price: 1000, quantity: 2},
-      {description: "Amplificador", price: 5000, quantity: 1},
-      {description: "Cabo", price: 30, quantity: 3},
+      {id: "1", quantity: 2},
+      {id: "2", quantity: 1},
+      {id: "3", quantity: 3},
     ],
     coupon: "VALE20_EXPIRED"
   };

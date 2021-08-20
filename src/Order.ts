@@ -12,23 +12,23 @@ export default class Order {
     this.items = [];
   }
 
-  addItem(description:string, price:number, quantity:number) {
-    this.items.push(new OrderItem(description, price, quantity));
+  addItem(id: string, price: number, quantity: number) {
+    this.items.push(new OrderItem(id, price, quantity));
   }
 
-  addCoupon ( coupon: Coupon) {
+  addCoupon(coupon: Coupon) {
     if (!coupon.isExpired()) {
       this.coupon = coupon;
     }
   }
 
-  getTotal() : number {
+  getTotal(): number {
     let total = 0;
     for (const orderItem of this.items) {
       total += orderItem.getTotal();
     }
     if (this.coupon) {
-      total -= (total * this.coupon.percentage)/100;
+      total -= (total * this.coupon.percentage) / 100;
     }
     return total;
   }
