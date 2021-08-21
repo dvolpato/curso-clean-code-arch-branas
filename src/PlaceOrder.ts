@@ -5,7 +5,7 @@ import Order from "./domain/entity/Order"
 import OrderRepository from "./domain/repository/OrderRepository";
 import PlaceOrderInput from "./PlaceOrderInput";
 import PlaceOrderOutput from "./PlaceOrderOutput";
-import ZipcodeCalculatorAPI from "./ZipcodeCalculatorAPI";
+import ZipcodeCalculatorAPI from "./domain/gateway/ZipcodeCalculatorAPI";
 
 export default class PlaceOrder {
   zipcodeCalculator: ZipcodeCalculatorAPI;
