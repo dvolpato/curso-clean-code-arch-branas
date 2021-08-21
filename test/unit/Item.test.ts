@@ -1,4 +1,4 @@
-import Item from "../../src/Item";
+import Item from "../../src/domain/entity/Item";
 
 test("Should calculate the volume of an item", () => {
   const item = new Item("1", "Amplificador", 5000, 50, 50, 50, 22);
