@@ -1,8 +1,9 @@
 import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepositoryMemory";
-import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
 import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCalculatorAPIMemory";
 import PlaceOrder from "../../src/application/PlaceOrder";
+import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
+import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
 
 test("Should place an order", async function () {
   // dto - data transfer object
@@ -16,7 +17,7 @@ test("Should place an order", async function () {
     ],
     coupon: "VALE20"
   };
-  const itemRepository = new ItemRepositoryMemory();
+  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
@@ -37,7 +38,7 @@ test("Should place an order with an expired discount coupon", async function () 
     ],
     coupon: "VALE20_EXPIRED"
   };
-  const itemRepository = new ItemRepositoryMemory();
+  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
@@ -58,7 +59,7 @@ test("Should place an order with freight value", async function () {
     ],
     coupon: "VALE20_EXPIRED"
   };
-  const itemRepository = new ItemRepositoryMemory();
+  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
