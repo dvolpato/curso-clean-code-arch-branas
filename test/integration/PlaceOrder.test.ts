@@ -1,6 +1,6 @@
-import CouponRepositoryMemory from "../../src/CouponRepositoryMemory";
-import ItemRepositoryMemory from "../../src/ItemRepositoryMemory";
-import OrderRepositoryMemory from "../../src/OrderRepositoryMemory";
+import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepositoryMemory";
+import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
+import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import ZipcodeCalculatorAPIMemory from "../../src/ZipcodeCalculatorAPIMemory";
 import PlaceOrder from "../../src/application/PlaceOrder";
 
