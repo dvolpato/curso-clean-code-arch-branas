@@ -14,3 +14,10 @@ test("Should calculate freight of amp", () => {
   const price = FreightCalculator.calculate(distance, item);
   expect(price).toBe(220);
 })
+
+test("Should calculate freight of amp", () => {
+  const item = new Item("3", "Cabo", 30, 9, 9, 9, 0.1);
+  const distance = 1000;
+  const price = FreightCalculator.calculate(distance, item);
+  expect(price).toBe(10);
+})
