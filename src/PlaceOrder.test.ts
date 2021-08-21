@@ -1,4 +1,5 @@
 import Coupon from "./Coupon";
+import ItemRepositoryMemory from "./ItemRepositoryMemory";
 import Order from "./Order";
 import PlaceOrder from "./PlaceOrder";
 
@@ -14,7 +15,8 @@ test("Should place an order", function () {
     ],
     coupon: "VALE20"
   };
-  const placeOrder = new PlaceOrder();
+  const itemRepository = new ItemRepositoryMemory();
+  const placeOrder = new PlaceOrder(itemRepository);
   const output = placeOrder.execute(input);
   expect(output.total).toBe(5982);
 });
@@ -31,7 +33,8 @@ test("Should place an order with an expired discount coupon", function () {
     ],
     coupon: "VALE20_EXPIRED"
   };
-  const placeOrder = new PlaceOrder();
+  const itemRepository = new ItemRepositoryMemory();
+  const placeOrder = new PlaceOrder(itemRepository);
   const output = placeOrder.execute(input);
   expect(output.total).toBe(7400);
 });
@@ -48,7 +51,8 @@ test("Should place an order with freight value", function () {
     ],
     coupon: "VALE20_EXPIRED"
   };
-  const placeOrder = new PlaceOrder();
+  const itemRepository = new ItemRepositoryMemory();
+  const placeOrder = new PlaceOrder(itemRepository);
   const output = placeOrder.execute(input);
   expect(output.freight).toBe(310);
 });

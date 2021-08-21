@@ -1,6 +1,7 @@
 import Coupon from "./Coupon";
 import FreightCalculator from "./FreightCalculator";
 import Item from "./Item";
+import ItemRepository from "./ItemRepository";
 import Order from "./Order"
 import PlaceOrderInput from "./PlaceOrderInput";
 import PlaceOrderOutput from "./PlaceOrderOutput";
@@ -9,19 +10,16 @@ import ZipcodeCalculatorAPIMemory from "./ZipcodeCalculatorAPIMemory";
 export default class PlaceOrder {
   coupons: Coupon[];
   orders: Order[];
-  items: Item[];
   zipcodeCalculator: ZipcodeCalculatorAPIMemory;
+  itemRepository: ItemRepository;
 
-  constructor() {
+  constructor(itemRepository: ItemRepository) {
+    this.itemRepository = itemRepository;
     this.coupons = [
       new Coupon("VALE20", 20, new Date("2021-10-10")),
       new Coupon("VALE20_EXPIRED", 20, new Date("2020-10-10"))
     ];
-    this.items = [
-      new Item("1", "Guitarra", 1000, 100, 50, 15, 3),
-      new Item("2", "Amplificador", 5000, 50, 50, 50, 22),
-      new Item("3", "Cabo", 30, 10, 10, 10, 1),
-    ];
+
     this.orders = [];
     this.zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
   }
@@ -30,7 +28,7 @@ export default class PlaceOrder {
     const order = new Order(input.cpf);
     const distance = this.zipcodeCalculator.calculate(input.zipcode, "99.999-999");
     for (const orderItem of input.items) {
-      const item = this.items.find(item => item.id === orderItem.id);
+      const item = this.itemRepository.getById(orderItem.id);
       if (!item) throw new Error("Item not found");
       order.addItem(orderItem.id, item.price, orderItem.quantity);
       order.freight += FreightCalculator.calculate(distance, item) * orderItem.quantity;
