@@ -2,7 +2,7 @@ import CouponRepositoryMemory from "../../src/CouponRepositoryMemory";
 import ItemRepositoryMemory from "../../src/ItemRepositoryMemory";
 import OrderRepositoryMemory from "../../src/OrderRepositoryMemory";
 import ZipcodeCalculatorAPIMemory from "../../src/ZipcodeCalculatorAPIMemory";
-import PlaceOrder from "../../src/PlaceOrder";
+import PlaceOrder from "../../src/application/PlaceOrder";
 
 test("Should place an order", function () {
   // dto - data transfer object
