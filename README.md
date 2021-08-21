@@ -2,8 +2,9 @@
 
 ## Etapas
 - [Parte 1](Part1.md)
-- [Parte 2](Part1.md)
-- [Parte 3](Part1.md)
+- [Parte 2](Part2.md)
+- [Parte 3](Part3.md)
+- [Parte 4](Part4.md)
 ## Design
 ### Conforme Clean Architecture
 
