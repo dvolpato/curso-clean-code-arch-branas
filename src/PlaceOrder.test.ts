@@ -6,6 +6,7 @@ test("Should place an order", function () {
   // dto - data transfer object
   const input = {
     cpf: "754.604.580-05",
+    zipcode: "11.111-11",
     items: [
       {id: "1", quantity: 2},
       {id: "2", quantity: 1},
@@ -22,6 +23,7 @@ test("Should place an order with an expired discount coupon", function () {
   // dto - data transfer object
   const input = {
     cpf: "754.604.580-05",
+    zipcode: "11.111-11",
     items: [
       {id: "1", quantity: 2},
       {id: "2", quantity: 1},
@@ -38,6 +40,7 @@ test("Should place an order with freight value", function () {
   // dto - data transfer object
   const input = {
     cpf: "754.604.580-05",
+    zipcode: "11.111-11",
     items: [
       {id: "1", quantity: 2},
       {id: "2", quantity: 1},
