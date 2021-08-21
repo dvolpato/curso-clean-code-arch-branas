@@ -4,7 +4,7 @@ import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderReposi
 import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCalculatorAPIMemory";
 import PlaceOrder from "../../src/application/PlaceOrder";
 
-test("Should place an order", function () {
+test("Should place an order", async function () {
   // dto - data transfer object
   const input = {
     cpf: "754.604.580-05",
@@ -21,11 +21,11 @@ test("Should place an order", function () {
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
   const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
-  const output = placeOrder.execute(input);
+  const output = await placeOrder.execute(input);
   expect(output.total).toBe(5982);
 });
 
-test("Should place an order with an expired discount coupon", function () {
+test("Should place an order with an expired discount coupon", async function () {
   // dto - data transfer object
   const input = {
     cpf: "754.604.580-05",
@@ -42,11 +42,11 @@ test("Should place an order with an expired discount coupon", function () {
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
   const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
-  const output = placeOrder.execute(input);
+  const output = await placeOrder.execute(input);
   expect(output.total).toBe(7400);
 });
 
-test("Should place an order with freight value", function () {
+test("Should place an order with freight value", async function () {
   // dto - data transfer object
   const input = {
     cpf: "754.604.580-05",
@@ -63,6 +63,6 @@ test("Should place an order with freight value", function () {
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
   const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
-  const output = placeOrder.execute(input);
+  const output = await placeOrder.execute(input);
   expect(output.freight).toBe(310);
 });
