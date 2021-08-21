@@ -1,4 +1,4 @@
-import FreightCalculator from "../../src/FreightCalculator";
+import FreightCalculator from "../../src/domain/service/FreightCalculator";
 import Item from "../../src/domain/entity/Item";
 
 test("Should calculate freight of guitar", () => {
