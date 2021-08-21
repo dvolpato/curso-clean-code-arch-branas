@@ -11,6 +11,7 @@
   "author": "Daniel Volpato",
   "license": "ISC",
   "dependencies": {
+    "pg-promise": "^10.11.0",
     "typescript": "^4.3.5"
   },
   "devDependencies": {
