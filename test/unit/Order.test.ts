@@ -37,3 +37,13 @@ test("should create an order with an expired coupon", function () {
   const total = order.getTotal();
   expect(total).toBe(7090);
 });
+
+test("should create an order with an id", function () {
+  const cpf = "754.604.580-05";
+  const order = new Order(cpf, new Date("2020-10-10"), 2);
+  order.addItem("1", 1000, 2);
+  order.addItem("2", 5000, 1);
+  order.addItem("3", 30, 3);
+  order.addCoupon(new Coupon ("VALE20", 20, new Date("2020-10-10")));
+  expect(order.code).toBe("202100000002");
+});
