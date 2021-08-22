@@ -7,6 +7,9 @@ export default class OrderRepositoryMemory implements OrderRepository {
   constructor() {
     this.orders = [];
   }
+  count(): number {
+    return this.orders.length;
+  }
 
   save(order: Order): void {
     this.orders.push(order);
