@@ -2,9 +2,8 @@ import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepo
 import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCalculatorAPIMemory";
 import PlaceOrder from "../../src/application/PlaceOrder";
-import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
-import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
 import PlaceOrderInput from "../../src/application/PlaceOrderInput";
+import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
 
 test("Should place an order", async function () {
   // dto - data transfer object
@@ -18,7 +17,8 @@ test("Should place an order", async function () {
     ],
     coupon: "VALE20"
   });
-  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  const itemRepository = new ItemRepositoryMemory();
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
@@ -40,7 +40,8 @@ test("Should place an order with an expired discount coupon", async function () 
     issueDate: new Date("2020-10-10"),
     coupon: "VALE20_EXPIRED"
   });
-  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  const itemRepository = new ItemRepositoryMemory();
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
@@ -62,7 +63,8 @@ test("Should place an order with freight value", async function () {
     issueDate: new Date("2020-10-10"),
     coupon: "VALE20_EXPIRED"
   });
-  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  const itemRepository = new ItemRepositoryMemory();
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
@@ -84,7 +86,8 @@ test("Should place an order with an id", async function () {
     issueDate: new Date("2020-10-10"),
     coupon: "VALE20_EXPIRED"
   });
-  const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
+  const itemRepository = new ItemRepositoryMemory();
   const couponRepository = new CouponRepositoryMemory();
   const orderRepository = new OrderRepositoryMemory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
