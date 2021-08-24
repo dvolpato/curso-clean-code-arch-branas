@@ -6,7 +6,11 @@
   "scripts": {
     "tsc:init": "tsc --init",
     "build": "tsc",
-    "test": "tsc && jest ./dist --forceExit"
+    "test": "tsc && jest ./dist --forceExit",
+    "db-start": "docker run --rm --network host --name ccca-pg-db -e POSTGRES_PASSWORD=123456 -d postgres",
+    "db-stop": "docker stop ccca-pg-db",
+    "db-psql": "docker run -it --rm --network host  postgres psql -h 127.0.0.1 -U postgres",
+    "db-init": "docker run -it --rm --network host --volume \"$PWD/database:/database\"  postgres psql -h 127.0.0.1 -U postgres --file /database/create.sql"
   },
   "author": "Daniel Volpato",
   "license": "ISC",
