@@ -9,7 +9,7 @@ export default class CouponRepositoryDatabase implements CouponRepository {
   }
 
   async getByCode(code: string): Promise<Coupon | undefined> {
-    const couponData = await this.database.one("SELECT * FROM ccca.coupon.code WHERE code = $1", [code]);
+    const couponData = await this.database.one("SELECT * FROM ccca.coupon WHERE code = $1", [code]);
     return new Coupon(couponData.code, couponData.percentage, new Date(couponData.expire_date));
   }
 }

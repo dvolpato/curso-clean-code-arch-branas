@@ -6,7 +6,7 @@ export default class PgPromiseDatabase implements Database {
   static instance: PgPromiseDatabase;
 
   private constructor() {
-    this.pgp = pgp()("postgres://postgres:123456@localhost:5432/app");
+    this.pgp = pgp()("postgres://postgres:123456@localhost:5432/postgres");
   }
 
   static getInstance() {
@@ -24,4 +24,7 @@ export default class PgPromiseDatabase implements Database {
     return this.pgp.oneOrNone(query, parameters);
   }
 
+  none(query: string, parameters: any) {
+    return this.pgp.none(query, parameters);
+  }
 }

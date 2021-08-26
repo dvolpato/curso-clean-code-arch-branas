@@ -5,6 +5,10 @@ import PlaceOrder from "../../src/application/PlaceOrder";
 import PlaceOrderInput from "../../src/application/PlaceOrderInput";
 import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
 import GetOrder from "../../src/application/GetOrder";
+import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
+import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
+import OrderRepositoryDatabase from "../../src/infra/repository/database/OrderRepositoryDatabase";
+import CouponRepositoryDatabase from "../../src/infra/repository/database/CouponRepositoryDatabase";
 
 test("Should get an order", async function () {
   // dto - data transfer object
@@ -18,14 +22,14 @@ test("Should get an order", async function () {
     ],
     coupon: "VALE20"
   });
-  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
-  const itemRepository = new ItemRepositoryMemory();
-  const couponRepository = new CouponRepositoryMemory();
-  const orderRepository = new OrderRepositoryMemory();
+  const itemRepository = new ItemRepositoryDatabase(PgPromiseDatabase.getInstance());
+  const couponRepository = new CouponRepositoryDatabase(PgPromiseDatabase.getInstance());
+  const orderRepository = new OrderRepositoryDatabase(PgPromiseDatabase.getInstance());
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
+
+  await orderRepository.clean();
   const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
   const output = await placeOrder.execute(input);
-  
   
   const getOrder = new GetOrder(itemRepository, couponRepository, orderRepository);
   const getOrderOutput = await getOrder.execute(output.code);  

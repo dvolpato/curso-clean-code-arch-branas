@@ -4,6 +4,9 @@ import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCa
 import PlaceOrder from "../../src/application/PlaceOrder";
 import PlaceOrderInput from "../../src/application/PlaceOrderInput";
 import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
+import OrderRepositoryDatabase from "../../src/infra/repository/database/OrderRepositoryDatabase";
+import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
+import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
 
 test("Should place an order", async function () {
   // dto - data transfer object
@@ -17,11 +20,11 @@ test("Should place an order", async function () {
     ],
     coupon: "VALE20"
   });
-  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
-  const itemRepository = new ItemRepositoryMemory();
+  const itemRepository = new ItemRepositoryDatabase(PgPromiseDatabase.getInstance());
   const couponRepository = new CouponRepositoryMemory();
-  const orderRepository = new OrderRepositoryMemory();
+  const orderRepository = new OrderRepositoryDatabase(PgPromiseDatabase.getInstance());
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
+  await orderRepository.clean();
   const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
   const output = await placeOrder.execute(input);
   expect(output.total).toBe(5982);
