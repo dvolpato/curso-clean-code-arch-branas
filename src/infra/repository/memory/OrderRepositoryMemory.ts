@@ -3,9 +3,15 @@ import OrderRepository from "../../../domain/repository/OrderRepository";
 
 export default class OrderRepositoryMemory implements OrderRepository {
   orders: Order[];
+  static instance: OrderRepository;
 
-  constructor() {
+  private constructor() {
     this.orders = [];
+  }
+
+  static getInstance() {
+    if (!OrderRepositoryMemory.instance) OrderRepositoryMemory.instance = new OrderRepositoryMemory();
+    return OrderRepositoryMemory.instance;
   }
 
   async get(code: string): Promise<Order> {
@@ -22,4 +28,7 @@ export default class OrderRepositoryMemory implements OrderRepository {
     this.orders.push(order);
   }
 
+  async clean(): Promise<void> {
+    this.orders = [];
+  }
 }

@@ -7,6 +7,7 @@ import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemReposito
 import OrderRepositoryDatabase from "../../src/infra/repository/database/OrderRepositoryDatabase";
 import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
 import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
+import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
 
 test("Should place an order", async function () {
   // dto - data transfer object
@@ -20,12 +21,11 @@ test("Should place an order", async function () {
     ],
     coupon: "VALE20"
   });
-  const itemRepository = new ItemRepositoryDatabase(PgPromiseDatabase.getInstance());
-  const couponRepository = new CouponRepositoryMemory();
-  const orderRepository = new OrderRepositoryDatabase(PgPromiseDatabase.getInstance());
+  const repositoryFactory = new MemoryRepositoryFactory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
+  const orderRepository = repositoryFactory.createOrderRepository();
   await orderRepository.clean();
-  const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
+  const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
   const output = await placeOrder.execute(input);
   expect(output.total).toBe(5982);
 });
@@ -43,12 +43,11 @@ test("Should place an order with an expired discount coupon", async function () 
     issueDate: new Date("2020-10-10"),
     coupon: "VALE20_EXPIRED"
   });
-  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
-  const itemRepository = new ItemRepositoryMemory();
-  const couponRepository = new CouponRepositoryMemory();
-  const orderRepository = new OrderRepositoryMemory();
+  const repositoryFactory = new MemoryRepositoryFactory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
-  const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
+  const orderRepository = repositoryFactory.createOrderRepository();
+  await orderRepository.clean();
+  const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
   const output = await placeOrder.execute(input);
   expect(output.total).toBe(7400);
 });
@@ -66,12 +65,11 @@ test("Should place an order with freight value", async function () {
     issueDate: new Date("2020-10-10"),
     coupon: "VALE20_EXPIRED"
   });
-  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
-  const itemRepository = new ItemRepositoryMemory();
-  const couponRepository = new CouponRepositoryMemory();
-  const orderRepository = new OrderRepositoryMemory();
+  const repositoryFactory = new MemoryRepositoryFactory();
+  const orderRepository = repositoryFactory.createOrderRepository();
+  await orderRepository.clean();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
-  const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
+  const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
   const output = await placeOrder.execute(input);
   expect(output.freight).toBe(310);
 });
@@ -89,12 +87,11 @@ test("Should place an order with an id", async function () {
     issueDate: new Date("2020-10-10"),
     coupon: "VALE20_EXPIRED"
   });
-  //const itemRepository = new ItemRepositoryDatabase(new PgPromiseDatabase);
-  const itemRepository = new ItemRepositoryMemory();
-  const couponRepository = new CouponRepositoryMemory();
-  const orderRepository = new OrderRepositoryMemory();
+  const repositoryFactory = new MemoryRepositoryFactory();
+  const orderRepository = repositoryFactory.createOrderRepository();
+  await orderRepository.clean();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
-  const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
+  const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
   const output = await placeOrder.execute(input);
   expect(output.code).toBe("202000000001");
 });

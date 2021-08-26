@@ -3,16 +3,17 @@ import FreightCalculator from "../domain/service/FreightCalculator";
 import ItemRepository from "../domain/repository/ItemRepository";
 import OrderRepository from "../domain/repository/OrderRepository";
 import GetOrderOutput from "./GetOrderOutput";
+import RepositoryFactory from "../domain/factory/RepositoryFactory";
 
 export default class GetOrder {
   itemRepository: ItemRepository;
   couponRepository: CouponRepository;
   orderRepository: OrderRepository;
 
-  constructor(itemRepository: ItemRepository, couponRepository: CouponRepository, orderRepository: OrderRepository) {
-    this.itemRepository = itemRepository;
-    this.couponRepository = couponRepository;
-    this.orderRepository = orderRepository;
+  constructor(repositoryFactory: RepositoryFactory) {
+    this.itemRepository = repositoryFactory.createItemRepository();
+    this.couponRepository = repositoryFactory.createCouponRepository();
+    this.orderRepository = repositoryFactory.createOrderRepository();
   }
 
   async execute(code: string): Promise<GetOrderOutput> {
@@ -23,7 +24,7 @@ export default class GetOrder {
       const orderItemOutput = {
         itemDescription: item?.description,
         price: orderItem.price,
-        quantity:  orderItem.quantity
+        quantity: orderItem.quantity
       }
       orderItems.push(orderItemOutput);
     }

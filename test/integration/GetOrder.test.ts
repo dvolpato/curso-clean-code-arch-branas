@@ -9,6 +9,7 @@ import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepo
 import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
 import OrderRepositoryDatabase from "../../src/infra/repository/database/OrderRepositoryDatabase";
 import CouponRepositoryDatabase from "../../src/infra/repository/database/CouponRepositoryDatabase";
+import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
 
 test("Should get an order", async function () {
   // dto - data transfer object
@@ -22,16 +23,15 @@ test("Should get an order", async function () {
     ],
     coupon: "VALE20"
   });
-  const itemRepository = new ItemRepositoryDatabase(PgPromiseDatabase.getInstance());
-  const couponRepository = new CouponRepositoryDatabase(PgPromiseDatabase.getInstance());
-  const orderRepository = new OrderRepositoryDatabase(PgPromiseDatabase.getInstance());
+  const repositoryFactory = new MemoryRepositoryFactory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
 
+  const orderRepository = repositoryFactory.createOrderRepository();
   await orderRepository.clean();
-  const placeOrder = new PlaceOrder(itemRepository, couponRepository, orderRepository, zipcodeCalculator);
+  const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
   const output = await placeOrder.execute(input);
   
-  const getOrder = new GetOrder(itemRepository, couponRepository, orderRepository);
+  const getOrder = new GetOrder(repositoryFactory);
   const getOrderOutput = await getOrder.execute(output.code);  
   expect(getOrderOutput.total).toBe(5982);
 
