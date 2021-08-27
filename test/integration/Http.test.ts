@@ -7,4 +7,5 @@ test("Should invoke API /orders/${code}", async function() {
   });
   const order = response.data;
   expect(order.code).toBe("202100000001");
+  console.log(order);
 });
