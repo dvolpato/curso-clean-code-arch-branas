@@ -16,7 +16,9 @@
   "author": "Daniel Volpato",
   "license": "ISC",
   "dependencies": {
+    "@hapi/hapi": "^20.1.5",
     "@types/express": "^4.17.13",
+    "@types/hapi__hapi": "^20.0.9",
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "pg-promise": "^10.11.0",
