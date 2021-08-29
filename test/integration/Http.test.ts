@@ -1,10 +1,11 @@
 import axios from "axios";
 import PlaceOrder from "../../src/application/PlaceOrder";
 import PlaceOrderInput from "../../src/application/PlaceOrderInput";
+import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositoryFactory";
 import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
 import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCalculatorAPIMemory";
 
-test.skip("Should invoke API /orders/${code}", async function () {
+test("Should invoke API /orders/${code}", async function () {
   const input = new PlaceOrderInput({
     cpf: "754.604.580-05",
     zipcode: "11.111-11",
@@ -15,7 +16,8 @@ test.skip("Should invoke API /orders/${code}", async function () {
     ],
     coupon: "VALE20"
   });
-  const repositoryFactory = new MemoryRepositoryFactory();
+  // const repositoryFactory = new MemoryRepositoryFactory();
+  const repositoryFactory = new DatabaseRepositoryFactory();
   const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
   const orderRepository = repositoryFactory.createOrderRepository();
   await orderRepository.clean();
@@ -28,5 +30,6 @@ test.skip("Should invoke API /orders/${code}", async function () {
   });
   const order = response.data;
   expect(order.code).toBe("202100000001");
-  console.log(order);
+  expect(order.freight).toBe(310);
+  expect(order.total).toBe(5982);
 });
