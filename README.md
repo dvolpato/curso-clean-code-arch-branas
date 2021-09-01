@@ -5,6 +5,8 @@
 - [Parte 2](Part2.md)
 - [Parte 3](Part3.md)
 - [Parte 4](Part4.md)
+- [Parte 5](Part5.md)
+- [Parte 6](Part6.md)
 ## Design
 ### Conforme Clean Architecture
 
