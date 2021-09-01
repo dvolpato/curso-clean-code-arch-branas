@@ -5,7 +5,7 @@ import DatabaseRepositoryFactory from "../../src/infra/factory/DatabaseRepositor
 import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
 import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCalculatorAPIMemory";
 
-test("Should invoke API /orders/${code}", async function () {
+test.skip("Should invoke API /orders/${code}", async function () {
   const input = new PlaceOrderInput({
     cpf: "754.604.580-05",
     zipcode: "11.111-11",
@@ -34,7 +34,7 @@ test("Should invoke API /orders/${code}", async function () {
   expect(order.total).toBe(5982);
 });
 
-test("Should invoke API /orders", async function () {
+test.skip("Should invoke API /orders", async function () {
 
   const response = await axios({
     url: "http://localhost:3000/orders",
