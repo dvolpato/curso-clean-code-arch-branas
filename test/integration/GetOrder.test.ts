@@ -1,15 +1,20 @@
-import CouponRepositoryMemory from "../../src/infra/repository/memory/CouponRepositoryMemory";
-import OrderRepositoryMemory from "../../src/infra/repository/memory/OrderRepositoryMemory";
 import ZipcodeCalculatorAPIMemory from "../../src/infra/gateway/memory/ZipcodeCalculatorAPIMemory";
 import PlaceOrder from "../../src/application/place-order/PlaceOrder";
 import PlaceOrderInput from "../../src/application/place-order/PlaceOrderInput";
-import ItemRepositoryMemory from "../../src/infra/repository/memory/ItemRepositoryMemory";
 import GetOrder from "../../src/application/get-order/GetOrder";
-import ItemRepositoryDatabase from "../../src/infra/repository/database/ItemRepositoryDatabase";
-import PgPromiseDatabase from "../../src/infra/database/PgPromiseDatabase";
-import OrderRepositoryDatabase from "../../src/infra/repository/database/OrderRepositoryDatabase";
-import CouponRepositoryDatabase from "../../src/infra/repository/database/CouponRepositoryDatabase";
 import MemoryRepositoryFactory from "../../src/infra/factory/MemoryRepositoryFactory";
+import RepositoryFactory from "../../src/domain/factory/RepositoryFactory";
+import ZipcodeCalculatorAPI from "../../src/domain/gateway/ZipcodeCalculatorAPI";
+
+let repositoryFactory: RepositoryFactory;
+let zipcodeCalculator: ZipcodeCalculatorAPI;
+
+beforeEach(async () => {
+  repositoryFactory = new MemoryRepositoryFactory();
+  zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
+  const orderRepository = repositoryFactory.createOrderRepository();
+  await orderRepository.clean();
+});
 
 test("Should get an order", async function () {
   // dto - data transfer object
@@ -23,16 +28,12 @@ test("Should get an order", async function () {
     ],
     coupon: "VALE20"
   });
-  const repositoryFactory = new MemoryRepositoryFactory();
-  const zipcodeCalculator = new ZipcodeCalculatorAPIMemory();
 
-  const orderRepository = repositoryFactory.createOrderRepository();
-  await orderRepository.clean();
   const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
   const output = await placeOrder.execute(input);
-  
+
   const getOrder = new GetOrder(repositoryFactory);
-  const getOrderOutput = await getOrder.execute(output.code);  
+  const getOrderOutput = await getOrder.execute(output.code);
   expect(getOrderOutput.total).toBe(5982);
 
 });
