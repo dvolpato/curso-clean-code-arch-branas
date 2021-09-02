@@ -13,5 +13,15 @@ export default class TaxCalculator {
         return (item.price * 5) / 100;
       }
     }
+
+    if (item.description === "Cabo") {
+      if (date.getMonth() !== 10) {
+        return (item.price * 5) / 100;
+      }
+      else {
+        return (item.price * 1) / 100;
+      }
+    }
+
   }
 }
