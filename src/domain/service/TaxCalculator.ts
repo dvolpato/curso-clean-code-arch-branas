@@ -6,7 +6,12 @@ export default class TaxCalculator {
   }
   calculate(item: Item, date: Date) {
     if (item.description === "Guitarra") {
-      return (item.price * 15)/100;
+      if (date.getMonth() !== 10) {
+        return (item.price * 15) / 100;
+      }
+      else {
+        return (item.price * 5) / 100;
+      }
     }
   }
 }
