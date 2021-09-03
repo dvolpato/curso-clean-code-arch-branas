@@ -37,6 +37,11 @@ export default class PlaceOrder {
     }
     const total = order.getTotal();
     await this.orderRepository.save(order);
-    return new PlaceOrderOutput({ freight: order.freight, code: order.code.value, total });
+    return new PlaceOrderOutput({
+      freight: order.freight,
+      code: order.code.value,
+      taxes: order.taxes,
+      total
+    });
   }
 }

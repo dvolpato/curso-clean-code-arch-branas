@@ -3,9 +3,11 @@ export default class GetOrderOutput {
   total: number;
   freight: number;
   orderItems: { itemDescription: string, price: number, quantity: number }[];
+  taxes: number;
 
-  constructor({ code, total, freight, orderItems }: { code: string, total: number, freight: number, orderItems: { itemDescription: string, price: number, quantity: number }[] }) {
+  constructor({ code, taxes, total, freight, orderItems }: { code: string, taxes: number, total: number, freight: number, orderItems: { itemDescription: string, price: number, quantity: number }[] }) {
     this.total = total;
+    this.taxes = taxes;
     this.freight = freight;
     this.code = code;
     this.orderItems = orderItems;

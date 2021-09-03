@@ -85,3 +85,22 @@ test("Should place an order with an id", async function () {
   const output = await placeOrder.execute(input);
   expect(output.code).toBe("202000000001");
 });
+
+
+test("Should place an order calculating the taxes", async function () {
+  // dto - data transfer object
+  const input = new PlaceOrderInput({
+    cpf: "754.604.580-05",
+    zipcode: "11.111-11",
+    items: [
+      { id: "1", quantity: 2 },
+      { id: "2", quantity: 1 },
+      { id: "3", quantity: 3 },
+    ],
+    coupon: "VALE20"
+  });
+  const placeOrder = new PlaceOrder(repositoryFactory, zipcodeCalculator);
+  const output = await placeOrder.execute(input);
+  expect(output.total).toBe(5982);
+  expect(output.taxes).toBe(1054.5);
+});
