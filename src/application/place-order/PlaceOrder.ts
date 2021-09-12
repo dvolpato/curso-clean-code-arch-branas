@@ -1,50 +1,22 @@
-import CouponRepository from "../../domain/repository/CouponRepository";
-import FreightCalculator from "../../domain/service/FreightCalculator";
-import ItemRepository from "../../domain/repository/ItemRepository";
-import Order from "../../domain/entity/Order"
-import OrderRepository from "../../domain/repository/OrderRepository";
 import PlaceOrderInput from "./PlaceOrderInput";
 import PlaceOrderOutput from "./PlaceOrderOutput";
 import ZipcodeCalculatorAPI from "../../domain/gateway/ZipcodeCalculatorAPI";
 import RepositoryFactory from "../../domain/factory/RepositoryFactory";
-import TaxTableRepository from "../../domain/repository/TaxTableRepository";
-import TaxCalculatorFactory from "../../domain/factory/TaxCalculatorFactory";
+import OrderCreator from "../../domain/service/OrderCreator";
 
 export default class PlaceOrder {
+  repositoryFactory: RepositoryFactory;
   zipcodeCalculator: ZipcodeCalculatorAPI;
-  itemRepository: ItemRepository;
-  couponRepository: CouponRepository;
-  orderRepository: OrderRepository;
-  taxTableRepository: TaxTableRepository;
 
   constructor(repositoryFactory: RepositoryFactory, zipcodeCalculator: ZipcodeCalculatorAPI) {
-    this.itemRepository = repositoryFactory.createItemRepository();
-    this.couponRepository = repositoryFactory.createCouponRepository();
-    this.orderRepository = repositoryFactory.createOrderRepository();
-    this.taxTableRepository = repositoryFactory.createTaxTableRepository();
+    this.repositoryFactory = repositoryFactory;
     this.zipcodeCalculator = zipcodeCalculator;
   }
 
   async execute(input: PlaceOrderInput): Promise<PlaceOrderOutput> {
-    const sequence = await this.orderRepository.count() + 1;
-    const order = new Order(input.cpf, input.issueDate, sequence);
-    const distance = this.zipcodeCalculator.calculate(input.zipcode, "99.999-999");
-    const taxCalculator = TaxCalculatorFactory.create(input.issueDate);
-    for (const orderItem of input.items) {
-      const item = await this.itemRepository.getById(orderItem.id);
-      if (!item) throw new Error("Item not found");
-      order.addItem(orderItem.id, item.price, orderItem.quantity);
-      order.freight += FreightCalculator.calculate(distance, item) * orderItem.quantity;
-      const taxTables = await this.taxTableRepository.getByIdItem(item.id);
-      const taxes = taxCalculator.calculate(item, taxTables);
-      order.taxes += taxes * orderItem.quantity;
-    }
-    if (input.coupon) {
-      const coupon = await this.couponRepository.getByCode(input.coupon);
-      if (coupon) order.addCoupon(coupon);
-    }
+    const orderCreator = new OrderCreator(this.repositoryFactory, this.zipcodeCalculator);
+    const order = await orderCreator.create(input);
     const total = order.getTotal();
-    await this.orderRepository.save(order);
     return new PlaceOrderOutput({
       freight: order.freight,
       code: order.code.value,
